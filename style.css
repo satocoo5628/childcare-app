@@ -16,29 +16,29 @@
     --color-text-lighter: #999999;
     --color-white: #FFFFFF;
     --color-shadow: rgba(0, 0, 0, 0.1);
-    
+
     /* スペーシング */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
-    
+
     /* ボーダー */
     --border-radius-sm: 8px;
     --border-radius-md: 12px;
     --border-radius-lg: 16px;
     --border-radius-full: 9999px;
-    
+
     /* シャドウ */
     --shadow-sm: 0 2px 4px var(--color-shadow);
     --shadow-md: 0 4px 8px var(--color-shadow);
     --shadow-lg: 0 8px 16px var(--color-shadow);
-    
+
     /* トランジション */
     --transition-fast: 150ms ease;
     --transition-normal: 250ms ease;
-    
+
     /* ナビゲーション高さ */
     --bottom-nav-height: 70px;
 }
@@ -156,6 +156,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -290,6 +291,42 @@ body {
     font-size: 0.9375rem;
 }
 
+/* 困りごとカード専用スタイル */
+.concern-card {
+    border-left-color: #FF9800;
+    background: linear-gradient(to right, #FFF3E0 0%, var(--color-white) 20%);
+}
+
+.concern-info {
+    background: #FFF8E1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+    border-left: 3px solid #FF9800;
+}
+
+.concern-type {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #E65100;
+    margin-bottom: var(--spacing-xs);
+}
+
+.concern-trigger {
+    font-size: 0.8125rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+}
+
+/* 困りごとフィールド */
+.concern-fields {
+    background: #FFF8E1;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    border: 2px solid #FFE082;
+    margin-bottom: var(--spacing-lg);
+}
+
 .empty-state {
     text-align: center;
     padding: var(--spacing-xl);
@@ -369,7 +406,7 @@ body {
     justify-content: center;
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom {
+.radio-label input[type="radio"]:checked+.radio-custom {
     border-color: transparent;
     transform: scale(1.02);
     box-shadow: var(--shadow-md);
@@ -379,7 +416,7 @@ body {
     background: var(--color-neutral);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.support-independent {
+.radio-label input[type="radio"]:checked+.radio-custom.support-independent {
     background: var(--color-success);
 }
 
@@ -387,7 +424,7 @@ body {
     background: var(--color-neutral);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.support-verbal {
+.radio-label input[type="radio"]:checked+.radio-custom.support-verbal {
     background: var(--color-warning);
 }
 
@@ -395,7 +432,7 @@ body {
     background: var(--color-neutral);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.support-physical {
+.radio-label input[type="radio"]:checked+.radio-custom.support-physical {
     background: var(--color-warning-dark);
 }
 
@@ -403,7 +440,7 @@ body {
     background: var(--color-neutral);
 }
 
-.radio-label input[type="radio"]:checked + .radio-custom.support-full {
+.radio-label input[type="radio"]:checked+.radio-custom.support-full {
     background: var(--color-danger);
 }
 
@@ -549,6 +586,7 @@ body {
     from {
         transform: translateY(100%);
     }
+
     to {
         transform: translateY(0);
     }
@@ -606,17 +644,17 @@ body {
     .summary-cards {
         grid-template-columns: repeat(4, 1fr);
     }
-    
+
     .modal.active {
         align-items: center;
         justify-content: center;
     }
-    
+
     .modal-content {
         max-width: 500px;
         border-radius: var(--border-radius-lg);
     }
-    
+
     .radio-group {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -627,7 +665,7 @@ body {
     body {
         padding-bottom: 0;
     }
-    
+
     .bottom-nav {
         position: static;
         max-width: 800px;
@@ -635,7 +673,7 @@ body {
         border-radius: var(--border-radius-lg);
         box-shadow: var(--shadow-md);
     }
-    
+
     .content {
         padding: var(--spacing-xl);
     }

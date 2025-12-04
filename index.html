@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- メインコンテンツ -->
     <main id="app">
@@ -87,7 +89,27 @@
                             <option value="身辺自立">身辺自立（着替え、食事、排泄）</option>
                             <option value="情緒">情緒（パニック、切り替え）</option>
                             <option value="学習・認知">学習・認知（指示理解、読み書き）</option>
+                            <option value="困りごと">困りごと</option>
                         </select>
+                    </div>
+
+                    <div id="concern-fields" class="concern-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="concern-type">困りごとの種類</label>
+                            <select id="concern-type">
+                                <option value="">選択してください</option>
+                                <option value="発達の遅れ">発達の遅れ</option>
+                                <option value="コミュニケーション">コミュニケーション</option>
+                                <option value="行動面">行動面</option>
+                                <option value="学習面">学習面</option>
+                                <option value="運動面">運動面</option>
+                                <option value="その他">その他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="concern-trigger">気づいたきっかけ</label>
+                            <textarea id="concern-trigger" rows="2" placeholder="例：他の子と比べて、先生からの指摘、など"></textarea>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -143,6 +165,7 @@
                             <button class="chip" data-filter-type="category" data-value="身辺自立">身辺自立</button>
                             <button class="chip" data-filter-type="category" data-value="情緒">情緒</button>
                             <button class="chip" data-filter-type="category" data-value="学習・認知">学習・認知</button>
+                            <button class="chip" data-filter-type="category" data-value="困りごと">困りごと</button>
                         </div>
                     </div>
                     <div class="filter-group">
@@ -238,4 +261,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

@@ -149,9 +149,22 @@ class ChildcareApp {
 
     setupForms() {
         const form = document.getElementById('episode-form');
-        
+        const categorySelect = document.getElementById('episode-category');
+        const concernFields = document.getElementById('concern-fields');
+
         // 日時の初期値を現在時刻に設定
         this.resetForm();
+
+        // カテゴリ変更時の処理
+        categorySelect.addEventListener('change', (e) => {
+            if (e.target.value === '困りごと') {
+                concernFields.style.display = 'block';
+                document.getElementById('concern-type').required = true;
+            } else {
+                concernFields.style.display = 'none';
+                document.getElementById('concern-type').required = false;
+            }
+        });
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -162,30 +175,41 @@ class ChildcareApp {
     resetForm() {
         const form = document.getElementById('episode-form');
         form.reset();
-        
+
         // 現在時刻を設定
         const now = new Date();
         const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
             .toISOString()
             .slice(0, 16);
         document.getElementById('episode-date').value = localDateTime;
+
+        // 困りごとフィールドを非表示にする
+        document.getElementById('concern-fields').style.display = 'none';
+        document.getElementById('concern-type').required = false;
     }
 
     handleSubmit() {
+        const category = document.getElementById('episode-category').value;
         const formData = {
             date: document.getElementById('episode-date').value,
             location: document.getElementById('episode-location').value,
-            category: document.getElementById('episode-category').value,
+            category: category,
             support: document.querySelector('input[name="support"]:checked').value,
             content: document.getElementById('episode-content').value
         };
 
+        // 困りごとの場合、追加情報を保存
+        if (category === '困りごと') {
+            formData.concernType = document.getElementById('concern-type').value;
+            formData.concernTrigger = document.getElementById('concern-trigger').value;
+        }
+
         this.store.addEpisode(formData);
-        
+
         // フォームをリセットして成功メッセージ
         this.resetForm();
         this.showToast('記録を保存しました');
-        
+
         // ホーム画面に戻る
         setTimeout(() => {
             this.navigateTo('home');
@@ -278,7 +302,7 @@ class ChildcareApp {
         // 最近の記録（最新5件）
         const recentEpisodes = this.store.getEpisodes().slice(0, 5);
         const container = document.getElementById('recent-episodes');
-        
+
         if (recentEpisodes.length === 0) {
             container.innerHTML = this.renderEmptyState();
         } else {
@@ -289,7 +313,7 @@ class ChildcareApp {
     renderTimeline() {
         const episodes = this.store.getEpisodes(this.filters);
         const container = document.getElementById('timeline-episodes');
-        
+
         if (episodes.length === 0) {
             container.innerHTML = this.renderEmptyState('フィルター条件に一致する記録がありません');
         } else {
@@ -302,8 +326,19 @@ class ChildcareApp {
         const formattedDate = this.formatDate(date);
         const supportClass = this.getSupportClass(episode.support);
 
+        // 困りごとの場合、追加情報を表示
+        let concernInfo = '';
+        if (episode.category === '困りごと' && episode.concernType) {
+            concernInfo = `
+                <div class="concern-info">
+                    <div class="concern-type">種類: ${episode.concernType}</div>
+                    ${episode.concernTrigger ? `<div class="concern-trigger">きっかけ: ${this.escapeHtml(episode.concernTrigger)}</div>` : ''}
+                </div>
+            `;
+        }
+
         return `
-            <div class="episode-card">
+            <div class="episode-card ${episode.category === '困りごと' ? 'concern-card' : ''}">
                 <div class="episode-header">
                     <div class="episode-category">${episode.category}</div>
                     <div class="episode-date">${formattedDate}</div>
@@ -312,6 +347,7 @@ class ChildcareApp {
                     <span class="episode-tag tag-location">${episode.location}</span>
                     <span class="episode-tag tag-support ${supportClass}">${episode.support}</span>
                 </div>
+                ${concernInfo}
                 <div class="episode-content">${this.escapeHtml(episode.content)}</div>
             </div>
         `;
@@ -345,7 +381,7 @@ class ChildcareApp {
         const day = date.getDate();
         const hours = date.getHours();
         const minutes = date.getMinutes().toString().padStart(2, '0');
-        
+
         return `${year}/${month}/${day} ${hours}:${minutes}`;
     }
 
