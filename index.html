@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="お子様の成長記録を簡単に記録・振り返りできるアプリ">
+    <title>成長記録アプリ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- メインコンテンツ -->
+    <main id="app">
+        <!-- ホーム画面 -->
+        <div id="home-view" class="view active">
+            <header class="app-header">
+                <h1>成長記録</h1>
+                <button id="menu-btn" class="icon-btn" aria-label="メニュー">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="content">
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="summary-number" id="total-episodes">0</div>
+                        <div class="summary-label">総記録数</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-number" id="this-week-episodes">0</div>
+                        <div class="summary-label">今週の記録</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>最近の記録</h2>
+                </div>
+                <div id="recent-episodes" class="episodes-list">
+                    <!-- エピソードカードがここに表示されます -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 記録追加画面 -->
+        <div id="add-view" class="view">
+            <header class="app-header">
+                <button id="back-from-add" class="icon-btn" aria-label="戻る">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <h1>新しい記録</h1>
+                <div style="width: 40px;"></div>
+            </header>
+
+            <div class="content">
+                <form id="episode-form">
+                    <div class="form-group">
+                        <label for="episode-date">日時</label>
+                        <input type="datetime-local" id="episode-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="episode-location">場所</label>
+                        <select id="episode-location" required>
+                            <option value="">選択してください</option>
+                            <option value="自宅">自宅</option>
+                            <option value="幼稚園/保育園">幼稚園/保育園</option>
+                            <option value="療育先">療育先</option>
+                            <option value="外出先">外出先</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="episode-category">カテゴリ</label>
+                        <select id="episode-category" required>
+                            <option value="">選択してください</option>
+                            <option value="社会性">社会性（お友達との関わり）</option>
+                            <option value="身辺自立">身辺自立（着替え、食事、排泄）</option>
+                            <option value="情緒">情緒（パニック、切り替え）</option>
+                            <option value="学習・認知">学習・認知（指示理解、読み書き）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>サポート度合い</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="support" value="一人でできた" required>
+                                <span class="radio-custom support-independent">一人でできた</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="support" value="声かけでできた">
+                                <span class="radio-custom support-verbal">声かけでできた</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="support" value="手助けが必要だった">
+                                <span class="radio-custom support-physical">手助けが必要だった</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="support" value="全面的に介助した">
+                                <span class="radio-custom support-full">全面的に介助した</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="episode-content">内容</label>
+                        <textarea id="episode-content" rows="5" placeholder="具体的な出来事を記録してください" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">記録を保存</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- タイムライン画面 -->
+        <div id="timeline-view" class="view">
+            <header class="app-header">
+                <h1>タイムライン</h1>
+                <button id="filter-btn" class="icon-btn" aria-label="フィルター">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="content">
+                <div id="filter-panel" class="filter-panel">
+                    <div class="filter-group">
+                        <label>カテゴリ</label>
+                        <div class="filter-chips">
+                            <button class="chip active" data-filter-type="category" data-value="all">すべて</button>
+                            <button class="chip" data-filter-type="category" data-value="社会性">社会性</button>
+                            <button class="chip" data-filter-type="category" data-value="身辺自立">身辺自立</button>
+                            <button class="chip" data-filter-type="category" data-value="情緒">情緒</button>
+                            <button class="chip" data-filter-type="category" data-value="学習・認知">学習・認知</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>サポート度合い</label>
+                        <div class="filter-chips">
+                            <button class="chip active" data-filter-type="support" data-value="all">すべて</button>
+                            <button class="chip" data-filter-type="support" data-value="一人でできた">一人でできた</button>
+                            <button class="chip" data-filter-type="support" data-value="声かけでできた">声かけでできた</button>
+                            <button class="chip" data-filter-type="support" data-value="手助けが必要だった">手助けが必要</button>
+                            <button class="chip" data-filter-type="support" data-value="全面的に介助した">全面介助</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="timeline-episodes" class="episodes-list">
+                    <!-- エピソードカードがここに表示されます -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- メニューモーダル -->
+    <div id="menu-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>メニュー</h2>
+                <button id="close-menu" class="icon-btn" aria-label="閉じる">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="menu-items">
+                <button id="export-btn" class="menu-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    データをエクスポート
+                </button>
+                <button id="import-btn" class="menu-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    データをインポート
+                </button>
+                <button id="clear-btn" class="menu-item danger">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    すべてのデータを削除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ボトムナビゲーション -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-view="home">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>ホーム</span>
+        </button>
+        <button class="nav-item" data-view="add">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <span>記録</span>
+        </button>
+        <button class="nav-item" data-view="timeline">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>一覧</span>
+        </button>
+    </nav>
+
+    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+    <script src="app.js"></script>
+</body>
+</html>
